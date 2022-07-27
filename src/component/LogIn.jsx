@@ -1,8 +1,11 @@
 import React from 'react'
+import logo from "./src/imagenes/logo.png"
+
 
 const LogIn = () => {
   return (
     <div>
+       <img src={logo}/>
         <form>
             <p>
                 Introduce tu usuario y contraseña para comenzar
