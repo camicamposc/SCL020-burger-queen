@@ -1,18 +1,22 @@
 import React from 'react'
-import logo from "./src/imagenes/logo.png"
 
 
 const LogIn = () => {
   return (
-    <div>
-       <img src={logo}/>
+    <div >
+       <img src="https://github.com/Noribel/SCL020-burger-queen/blob/main/src/imagenes/logo.png?raw=true" className="mt-5 rounded-pill w-50" alt=""/>
         <form>
-            <p>
+            <p className="mt-5">
                 Introduce tu usuario y contraseña para comenzar
             </p>
-            <input type="email" className="form-logIn mb-2" placeholder='usuario' />
-            <input type="password" className="form-logIn mb-2" placeholder='contraseña' />  
-            <button className="btn">Ingresar</button>
+          <div className='sesion'>
+            <input type="email" className="form-logIn" placeholder='usuario' />
+            <input type="password" className="form-logIn mt-2" placeholder='contraseña' />  
+            <button className="btn-dark mt-2" >Ingresar</button>  
+
+          </div>
+           
+           
         </form>
     </div>
   )
