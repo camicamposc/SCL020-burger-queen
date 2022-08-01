@@ -10,7 +10,7 @@ const LogIn = () => {
                 Introduce tu usuario y contraseña para comenzar
             </p>
           <div className='sesion'>
-            <input type="email" className="form-logIn" placeholder='usuario' />
+            <input type="email" className="form-logIn bg-indigo-600" placeholder='usuario' />
             <input type="password" className="form-logIn mt-2" placeholder='contraseña' />  
             <button className="btn-dark mt-2" >Ingresar</button>  
 

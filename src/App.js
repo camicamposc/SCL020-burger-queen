@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import './App.css';
 import LogIn from "./component/LogIn";
+import VistaMesero from "./component/VistaMesero";
 
 
 function App() {
@@ -10,42 +11,39 @@ function App() {
      
       <Routes>
         <Route path="/" element={<LogIn />} />
-        <Route path="about" element={<About />} />
-      </Routes>
+        <Route path="/about" element={<VistaMesero />} />
+        </Routes>
     </div>
   );
 }
 
-// function Home() {
-//   return (
-//     <>
-//       <main>
-//         <h2>Welcome to the homepage!</h2>
-//         <p>You can do this, I believe in you.</p>
-//       </main>
-//       <nav>
-//         <Link to="/about">About</Link>
-//       </nav>
-//     </>
-//   );
-// }
+ /* function Home() {
+   return (
+     <>
+       <main>
+         <h2>Welcome to the homepage!</h2>
+         <p>You can do this, I believe in you.</p>
+       </main>
+       <nav>
+         <Link to="/about">About</Link>
+       </nav>
+     </>
+  );
+ }*/
 
-function About() {
+/*function About() {
   return (
     <>
-      <main>
-        <h2>Who are we?</h2>
-        <p>
-          That feels like an existential question, don't you
-          think?
-        </p>
-      </main>
+     <Routes>
+        <Route path="/" element={<VistaMesero />} />
+        <Route path="about" element={<About />} />
+        </Routes>
       <nav>
         <Link to="/">Home</Link>
       </nav>
     </>
   );
-}
+}*/
 
 export default App;
 
