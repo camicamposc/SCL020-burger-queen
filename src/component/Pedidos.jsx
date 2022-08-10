@@ -5,12 +5,14 @@ import data from '../data.json';
 import ResumenPedido from './ResumenPedido';
 import { useParams } from 'react-router-dom';
 import ReplyIcon from '@mui/icons-material/Reply';
+import { useHistory } from "react-router-dom";
 
 const Pedidos = () => {
 
   const menu = data
   const { mesa } = useParams()
   console.log(mesa)
+  const history = useHistory()
 
   const [productos, setProductos] = React.useState(false)
   const [type, setType] = React.useState('breakfast')
@@ -31,6 +33,10 @@ const Pedidos = () => {
     setResumen([
       ...resumen,
     ])
+  }
+
+  const goBack = () => {
+    history.push("/homeMesero")
   }
 
   return (
@@ -77,6 +83,7 @@ const Pedidos = () => {
 
       <button style={{ background: "#A91313", border: "#A91313", margin: "10px", borderRadius:"10px" }}>
         <ReplyIcon
+          onClick={() => goBack()}
           style={{ color: "#98C2B1" }}
         />
       </button>
