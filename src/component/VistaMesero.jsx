@@ -4,6 +4,7 @@ import { Button } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { borderRadius } from '@mui/system';
+import { auth, signOut } from '../Firebase/config';
 
 const table = [
   {
@@ -38,6 +39,23 @@ const VistaMesero = () => {
   const handleNext = (mesa) => {
     history.push(`/Pedidos/${mesa}`)
   }
+
+  const handleLogOut = e => {
+    logOut()
+    history.push("/")
+  }
+
+  const logOut = () => {
+    signOut(auth)
+		.then(() => {
+			console.log('Adiós');
+			// Sign-out successful.
+		})
+		.catch((error) => {
+			alert('aún estás aquí');
+			// An error happened.
+		});
+  }
   return (
     <div style={{ background: "#98C2B1", height: "100%" }}>
       <img src="https://github.com/Noribel/SCL020-burger-queen/blob/main/src/imagenes/logo.png?raw=true"
@@ -60,6 +78,7 @@ const VistaMesero = () => {
       </Grid>
       <button style={{ background: "#A91313", border: "#A91313" }}>
         <LogoutIcon
+          onClick={() => handleLogOut()}
           style={{ color: "#98C2B1" }}
         />
       </button>

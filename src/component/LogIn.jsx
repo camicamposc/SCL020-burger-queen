@@ -2,8 +2,6 @@ import React, { useCallback } from 'react'
 import { useHistory } from "react-router-dom";
 import { auth, signInWithEmailAndPassword } from '../Firebase/config';
 
-
-
 const LogIn = () => {
 
   const [password, setPassword] = React.useState("")
@@ -19,8 +17,14 @@ const LogIn = () => {
     try {
       const resp = await signInWithEmailAndPassword(auth, email, password)
       console.log("domingo", resp)
-      history.push("/homeMesero")
+
+        if (resp.user.email === "clearca57@gmail.com"){
+          history.push("/homeMesero") 
+        } else if (resp.user.email === "rivero.noribel@gmail.com"){
+          history.push("/homeChef")
+        }
     } catch (error) {
+      alert("Usuario o contraseña no validos")
       console.log(error.message);
 
     }
