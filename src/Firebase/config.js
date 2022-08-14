@@ -37,4 +37,4 @@ const firebaseConfig = {
   const auth = getAuth();
   const db = getFirestore(app);
   
-  export {db, auth, signInWithEmailAndPassword, addDoc, collection, signOut, onSnapshot, query, where, orderBy, getDocs}
+  export {db, auth, signInWithEmailAndPassword, addDoc, collection, signOut, onSnapshot, query, where, orderBy, doc, getDocs, updateDoc}
