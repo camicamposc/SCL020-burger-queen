@@ -1,6 +1,5 @@
 import React from 'react'
-import LogoutIcon from '@mui/icons-material/Logout';
-import { auth, collection, db, signOut, where, onSnapshot, doc, query, updateDoc } from '../Firebase/config';
+import { auth, collection, db, signOut, where, onSnapshot, doc, query, updateDoc, deleteDoc } from '../Firebase/config';
 import { useHistory } from 'react-router-dom';
 import { Button, Grid } from '@mui/material';
 import Box from "@mui/material/Box";
@@ -8,31 +7,24 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { editableInputTypes } from '@testing-library/user-event/dist/utils';
+import Navbar from './Navbar';
+import moment from 'moment';
+import 'moment/locale/es';
+import Swal from 'sweetalert2';
+import growlAlert from 'growl-alert';
+import 'growl-alert/dist/growl-alert.css';
 
 const EstadoPedidos = () => {
 
+    const effect =
+  {
+      fadeAway: true,
+      fadeAwayTimeOut: 1000,
+  }
+
     const history = useHistory()
 
-    const handleLogOut = e => {
-        logOut()
-        history.push("/")
-    }
-
-    const logOut = () => {
-        signOut(auth)
-            .then(() => {
-                console.log('Adiós');
-                // Sign-out successful.
-            })
-            .catch((error) => {
-                alert('aún estás aquí');
-                // An error happened.
-            });
-    }
-
     const [orders, setOrders] = React.useState([])
-    // console.log("Camila", orders)
     const [ordersPreparation, setOrdersPreparation] = React.useState([])
     const [delivery, setDelivery] = React.useState([])
    
@@ -50,7 +42,7 @@ const EstadoPedidos = () => {
                     id: doc.id,
                     ...doc.data()
                 }))
-                // console.log(pedidos)
+                console.log(pedidos)
                 setOrders(pedidos)
             })
         }
@@ -83,10 +75,11 @@ const EstadoPedidos = () => {
         </Box>
     );
 
-    const edit = (item) => {
+    const editOrders = (item) => {
         console.log(item)
                 updateDoc(doc(db, "Pedidos", item.id), {
-                    estado: "Servido"
+                    estado: "Servido",
+                    hourDelivered: new Date().getTime()
                 }).then (() => {
                   console.log("listo")
                 })
@@ -94,53 +87,71 @@ const EstadoPedidos = () => {
                     console.log("error")
                 })
     }
+
+    const deleteOrders = (item) => {
+        Swal.fire({
+            title: "¿Estas seguro que quieres eliminar este pedido?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: 'Eliminar',
+            denyButtonText: `Cancelar`,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            deleteDoc(doc(db, 'Pedidos', item.id))
+            .then(() => {
+                growlAlert.success({ text: 'Pedido Eliminado', ...effect })
+                // Swal.fire('Saved!', '', 'success')
+            })
+            .catch(() => {
+                growlAlert.error({ text: 'El pedido no fue eliminado', ...effect })
+                // Swal.fire('Changes are not saved', '', 'info')
+            });
+          })
+    };
   
     return (
-        <div style={{ background: "#98C2B1", height: "100%" }}>
-            <img src="https://github.com/Noribel/SCL020-burger-queen/blob/main/src/imagenes/logo.png?raw=true"
-                className="mt-5 rounded-pill"
-                alt=""
-                style={{ height: "20%", width: "20%" }}
-            ></img>
-            <button style={{ background: "#A91313", border: "#A91313" }}>
-                <LogoutIcon
-                    onClick={() => handleLogOut()}
-                    style={{ color: "#98C2B1" }}
-                />
-            </button>
-            <Grid container spacing={2} marginTop="10px">
+        <div >
+        <Navbar/>
+            <Grid container justifyContent="center"
+             alignItems="center" spacing={2} className="mt-3 mb-5">
                 {ordersPreparation.map((item, index) => {
                     return (
-                        <Card sx={{ minWidth: 210 }} key={index} style={{ background: "white", color: "#A91313", margin: "5px" }}>
+                        <Grid item xs={3} key={index}>
+                        <Card  key={index} style={{ background: "white", color: "#A91313", margin: "5px" }}>
                             <Typography sx={{ fontSize: 14 }} color="#A91313" gutterBottom marginTop="10px">
                                 Pedido {item.estado}
                             </Typography>
+                            <span>Hora: {moment(item.hourSend).format('LT')}</span>
                             <Typography variant="h5" component="div">
                                 Mesa {bull}{" " + item.mesa}
                             </Typography>
                             {item.orden.map((item, index) => {
                                 return (
                                     <CardContent key={index}>
-                                        <Typography sx={{ mb: 1.5 }} color="#A91313">
+                                        <Typography color="#A91313">
                                             {item.countProducto} {item.nombreProducto}
                                         </Typography>
                                     </CardContent>
                                 )
                             })}
                             <CardActions>
-                                <Button size="small" variant="contained" style={{ background: "#98C2B1", color: "#A91313", fontWeight: "bold", marginLeft: "10px" }}>
+                                <Button onClick={()=> deleteOrders(item)}
+                                size="small" variant="contained"  style={{ background: "rgb(245 143 143)", color: "white",  width: "100px", height: "40px", fontWeight: "bold"}}>
                                     Cancelar
                                 </Button>
                             </CardActions>
                         </Card>
+                    </Grid>
                     )
                 })}
 
             </Grid>
-            <Grid container spacing={2} marginTop="10px">
+            <Grid container justifyContent="center"
+             alignItems="center" spacing={2} marginTop="10px">
                 {orders.map((item, index) => {
                     return (
-                        <Card sx={{ minWidth: 210 }} key={index} style={{ background: "#A91313", color: "white", margin: "5px" }}>
+                        <Grid item xs={3} key={index}>
+                        <Card key={index} style={{ background: "#A91313", color: "white", margin: "5px" }}>
                             <Typography sx={{ fontSize: 14 }} color="white" gutterBottom marginTop="10px">
                                 Pedido {item.estado}
                             </Typography>
@@ -150,7 +161,7 @@ const EstadoPedidos = () => {
                             {item.orden.map((item, index) => {
                                 return (
                                     <CardContent key={index}>
-                                        <Typography sx={{ mb: 1.5 }} color="white">
+                                        <Typography color="white">
                                             {item.countProducto} {item.nombreProducto}
                                         </Typography>
                                     </CardContent>
@@ -160,13 +171,14 @@ const EstadoPedidos = () => {
                                 <Button 
                                 size="small" 
                                 variant="contained" 
-                                style={{ background: "white", color: "#A91313", fontWeight: "bold" }}
-                                onClick={()=> edit(item)}
+                                style={{ background: "white", color: "#A91313", fontWeight: "bold",width: "100px", height: "40px"  }}
+                                onClick={()=> editOrders(item)}
                                 >
                                     Servir
                                 </Button>
                             </CardActions>
                         </Card>
+                        </Grid>
                     )
                 })}
 

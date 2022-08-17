@@ -1,10 +1,8 @@
 import React from 'react'
 import Grid from '@mui/material/Grid';
-import { Button } from '@mui/material';
+import { Button} from '@mui/material';
 import { useHistory } from 'react-router-dom';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { borderRadius } from '@mui/system';
-import { auth, signOut } from '../Firebase/config';
+import Navbar from './Navbar';
 
 const table = [
   {
@@ -40,49 +38,21 @@ const VistaMesero = () => {
     history.push(`/Pedidos/${mesa}`)
   }
 
-  const handleLogOut = e => {
-    logOut()
-    history.push("/")
-  }
-
-  const logOut = () => {
-    signOut(auth)
-		.then(() => {
-			console.log('Adiós');
-			// Sign-out successful.
-		})
-		.catch((error) => {
-			alert('aún estás aquí');
-			// An error happened.
-		});
-  }
-
   const handleOrders = () => {
     history.push("/EstadoPedidos")
   }
   return (
-    <div style={{ background: "#98C2B1", height: "100%" }}>
-      <img src="https://github.com/Noribel/SCL020-burger-queen/blob/main/src/imagenes/logo.png?raw=true"
-        className="mt-5 rounded-pill"
-        alt=""
-        style={{ height: "20%", width: "20%" }}
-      ></img>
-      <Grid container>
-        <Grid item xs={6}>
-          <Button variant='contained' onClick={handleOrders}>
-            Estado de Pedidos
-          </Button>
-        </Grid>
-        <Grid item xs={6}>
-        <button style={{ background: "#A91313", border: "#A91313" }}>
-        <LogoutIcon
-          onClick={() => handleLogOut()}
-          style={{ color: "#98C2B1" }}
-        />
-      </button>
-        </Grid>
+    <div>
+      <Navbar/>
+      <Grid container justifyContent="flex-end">
+      <Grid item xs={6}>
+        <Button variant='contained' onClick={handleOrders}
+          style={{ background: "rgb(245 143 143)", color: "white",  width: "200px", height: "50px" }}>
+          Estado de Pedidos
+        </Button>
       </Grid>
-      <Grid container spacing={2}>
+      </Grid>
+      <Grid container spacing={2} className="mt-3 mb-5">
         {table.map((item, index) => {
           return (
             <Grid item xs={6} key={index}>
@@ -95,7 +65,7 @@ const VistaMesero = () => {
         })}
 
       </Grid>
-      
+
     </div>
   )
 }

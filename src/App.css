@@ -3,7 +3,11 @@
 }
 
 .App {
-  text-align: center;  
+  text-align: center; 
+  background: #98C2B1;
+  min-height: 680px;
+  max-height: 2000px;
+
 }
 
 .App-logo {

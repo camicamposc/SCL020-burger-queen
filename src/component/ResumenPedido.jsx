@@ -12,9 +12,16 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { collection, db, addDoc } from '../Firebase/config';
 import { Button } from '@mui/material';
+import growlAlert from 'growl-alert';
+import 'growl-alert/dist/growl-alert.css';
 
 const ResumenPedido = (props) => {
   const nMesa = props.mesa;
+  const effect =
+  {
+      fadeAway: true,
+      fadeAwayTimeOut: 1000,
+  }
 
   const [result, setResult] = React.useState(props.resumen);
 
@@ -44,11 +51,11 @@ const ResumenPedido = (props) => {
     try {
       await addDoc(collection(db, 'Pedidos'), {
         estado: "en preparación",
-        hora: new Date(),
+        hourSend: new Date(),
         mesa: nMesa,
         orden: props.resumen
       })
-
+      growlAlert.success({ text: 'Pedido Enviado', ...effect })
     } catch (error) {
       console.log(error)
     }
@@ -56,49 +63,50 @@ const ResumenPedido = (props) => {
 
 
   return (
-    <div>
-      <TableContainer component={Paper} style={{ background: "#A91313", height: "100%" }}>
+    <div> 
+      <TableContainer component={Paper} style={{ background: "rgb(245 143 143)", color: "white",  height: "100%" }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-          <TableHead>
+          <TableHead style={{ background: "rgb(245 143 143)", color: "white"}}>
             <TableRow>
-              <TableCell >Producto</TableCell>
-              <TableCell align="right"></TableCell>
-              <TableCell align="center">Cantidad</TableCell>
-              <TableCell align="right"></TableCell>
-              <TableCell align="right">Precio Unitario</TableCell>
-              <TableCell align="right">Precio Total</TableCell>
-              <TableCell align="right">Eliminar producto</TableCell>
+              <TableCell style={{ color: "white"}} >Producto</TableCell>
+              <TableCell align="right"style={{ color: "white"}}></TableCell>
+              <TableCell align="center" style={{ color: "white"}}>Cantidad</TableCell>
+              <TableCell align="right"style={{ color: "white"}}></TableCell>
+              <TableCell align="right" style={{ color: "white"}}>Precio Unitario</TableCell>
+              <TableCell align="right" style={{ color: "white"}}>Precio Total</TableCell>
+              <TableCell align="right" style={{ color: "white"}}>Eliminar producto</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody style={{ background: "rgb(245 143 143)", color: "white"}}>
             {props.resumen.map((row, i) => (
               <TableRow
                 key={i}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell component="th" scope="row">
+                <TableCell component="th" scope="row" style={{ color: "white"}}>
                   {row.nombreProducto}
                 </TableCell>
-                <TableCell align="right"><RemoveIcon
+                <TableCell align="right" style={{ color: "white"}}><RemoveIcon style={{ color: "white"}}
                   onClick={(e) => subtract(row)} /></TableCell>
-                <TableCell align="center">{row.countProducto}</TableCell>
-                <TableCell align="right"><AddIcon
+                <TableCell align="center" style={{ color: "white"}}>{row.countProducto}</TableCell>
+                <TableCell align="right" style={{ color: "white"}}><AddIcon style={{ color: "white"}}
                   onClick={(e) => increase(row)} /></TableCell>
-                <TableCell align="right"><AttachMoneyIcon />{row.precioProducto}</TableCell>
-                <TableCell align="right">Por Ejecutar</TableCell>
-                <TableCell align="right"><DeleteIcon
+                <TableCell style={{ color: "white"}}align="right"><AttachMoneyIcon style={{ color: "white"}}/>{row.precioProducto}</TableCell>
+                <TableCell style={{ color: "white"}}align="right">Por Ejecutar</TableCell>
+                <TableCell  style={{ color: "white"}}align="right"><DeleteIcon style={{ color: "white"}}
                   onClick={(e) => remove(row)} /></TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
-      <Button
+        <Button
         variant='contained'
-        style={{ background: "#A91313", color: "white", width: "200px", height: "100px", margin:"10px"}}
+        style={{ background: "white", color: "#A91313", width: "200px", height: "50px", margin:"10px"}}
         onClick={(e) => sendOrden()}>
         Enviar Pedido
       </Button>
+      </TableContainer>
+    
 
     </div>
   )
