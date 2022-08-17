@@ -32,7 +32,7 @@ const LogIn = () => {
 
 
   return (
-    <div style={{ background: "#98C2B1", height: "100%" }}>
+    <div>
       <img src="https://github.com/Noribel/SCL020-burger-queen/blob/main/src/imagenes/logo.png?raw=true"
         className="mt-5 rounded-pill"
         alt=""
